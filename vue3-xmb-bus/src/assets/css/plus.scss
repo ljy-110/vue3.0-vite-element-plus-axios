@@ -1,0 +1,14 @@
+
+.el-tooltip__trigger:focus-visible {
+  outline: unset;
+}
+// 搜索的输入框
+.search-form .el-input {
+  --el-input-width: 220px;
+}
+.search-form .el-select {
+  --el-select-width: 220px;
+}
+.search-form .el-form-item{
+  margin-bottom: 5px;
+}

@@ -6,24 +6,24 @@
 
 <script>
 export default {
-  props: {},
   components: {},
-  watch: {},
-  computed: {},
-  data () {
+  props: {},
+  data() {
     return {
     };
   },
-  mounted () {},
-  created () {},
+  computed: {},
+  watch: {},
+  mounted() {},
+  created() {},
+  updated() {},
+  unmounted() {},
   methods: {},
-  beforeCreated () {},
-  beforeMounted () {},
-  beforeUpdated () {},
-  updated () {},
-  beforeDestroyed () {},
-  destroyed () {},
-}
+  beforeCreated() {},
+  beforeMounted() {},
+  beforeUpdated() {},
+  beforeDestroyed() {}
+};
 </script>
 <style lang='scss' scoped>
 </style>

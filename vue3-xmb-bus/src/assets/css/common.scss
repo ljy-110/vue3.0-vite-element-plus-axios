@@ -1,0 +1,121 @@
+html {
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  // font-family: Alibaba PuHuiTi, Alibaba PuHuiTi;
+}
+body, dl, dd, h1, h2, h3, h4, h5, h6, p, form {
+  margin:0; padding: 0;
+}
+p {
+  line-height: 1.5;
+}
+ol, ul{
+  margin:0; padding:0;
+}
+li {
+  list-style: none;
+}
+a {
+  background-color: transparent;
+  text-decoration: none;
+}
+i {
+  font-style: normal;
+}
+a:active,
+a:hover {
+  outline-width: 0;
+}
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #fff;
+}
+
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  -webkit-box-shadow: inset 0 0 6px rgba(144, 147, 153, .3);
+  background-color: rgba(144, 147, 153, .3);
+}
+.zhgd-division{
+  height: 10px;
+  background-color: rgba(144, 147, 153,.2);
+}
+.badge {
+  top: 10px;
+  height: 8px;
+  width: 8px;
+  padding: 0;
+  right: 0;
+  border-radius: 50%;
+  background-color: #F56C6C;
+  margin-right: 10px;
+}
+
+.between{
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+.center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.h-center{
+  display: flex;
+  align-items: center;
+}
+.flex-start{
+  display: flex;
+  width: 100%;
+  justify-content: flex-start;
+}
+.flex-end{
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+// 字体
+.fontbold{
+  font-weight: bold;
+}
+.font18{
+  font-size: 18px;
+}
+.font20{
+  font-size: 20px;
+}
+
+// 间距
+.mLeft10{
+  margin-left: 10px;
+}
+.mLeft20{
+  margin-left: 20px;
+}
+.mRight10{
+  margin-right: 10px;
+}
+.mRight20{
+  margin-right: 20px;
+}
+.mTop10{
+  margin-top: 10px;
+}
+.mTop20{
+  margin-top: 20px;
+}
+.p10{
+  padding: 10px;
+  box-sizing: border-box;
+}

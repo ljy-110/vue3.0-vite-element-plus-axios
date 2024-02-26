@@ -37,7 +37,7 @@
 //   beforeMounted () {},
 //   beforeUpdated () {},
 //   updated () {},
-//   beforeDestroyed () {},
+//   beforeDestroy () {},
 //   destroyed () {},
 // }
 // </script>

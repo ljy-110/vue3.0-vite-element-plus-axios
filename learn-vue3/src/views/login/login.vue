@@ -6,7 +6,7 @@
           <el-input v-model="ruleForm.name" />
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="ruleForm.password" />
+          <el-input v-model="ruleForm.password" type="password" />
         </el-form-item>
         <el-form-item>
           <el-button style="width:100%;" @click="submitForm('ruleFormRef')">登录</el-button>
@@ -17,38 +17,38 @@
 </template>
 
 <script setup>
-import { ref, onMounted,reactive, getCurrentInstance  } from 'vue'
-import CryptoJS from 'crypto-js'
-const currentInstance = getCurrentInstance()
-const { $http,$router } = currentInstance.appContext.config.globalProperties
-import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted, reactive, getCurrentInstance  } from 'vue';
+import CryptoJS from 'crypto-js';
+const currentInstance = getCurrentInstance();
+const { $http, $router } = currentInstance.appContext.config.globalProperties;
+import { useRoute, useRouter } from 'vue-router';
 const router = useRouter();
 const route = useRoute();
 const ruleForm = ref({
-  name:'',password:''
-})
+  name: '', password: ''
+});
 const rules = ref({
   name: [
-    { required: true, message: '请输入账号', trigger: 'blur' },
+    { required: true, message: '请输入账号', trigger: 'blur' }
   ],
   password: [
-    { required: true, message: '请输入密码', trigger: 'blur' },
-  ],
-})
+    { required: true, message: '请输入密码', trigger: 'blur' }
+  ]
+});
 
 // 加密
-function encrypt (word) {
-  let keyStr = 'Vn74ag9kBuW3lYv2' // 密钥
-  let ivStr = keyStr.substring(0, 16) // 偏移量
-  let key = CryptoJS.enc.Utf8.parse(keyStr)
-  let iv = CryptoJS.enc.Utf8.parse(ivStr)
-  let srcs = CryptoJS.enc.Utf8.parse(word)
+function encrypt(word) {
+  let keyStr = 'Vn74ag9kBuW3lYv2'; // 密钥
+  let ivStr = keyStr.substring(0, 16); // 偏移量
+  let key = CryptoJS.enc.Utf8.parse(keyStr);
+  let iv = CryptoJS.enc.Utf8.parse(ivStr);
+  let srcs = CryptoJS.enc.Utf8.parse(word);
   let encrypted = CryptoJS.AES.encrypt(srcs, key, {
     iv: iv,
     mode: CryptoJS.mode.CBC,
     padding: CryptoJS.pad.Pkcs7
-  })
-  return encrypted.toString()
+  });
+  return encrypted.toString();
 }
 // function decrypt (word) {
 //   let keyStr = 'Vn74ag9kBuW3lYv2'
@@ -65,21 +65,21 @@ function encrypt (word) {
 //   return decrypt.toString(CryptoJS.enc.Utf8)
 // }
 
-const ruleFormRef = ref(null)
-const submitForm = ()=>{
-  ruleFormRef.value.validate((valid) => {
+const ruleFormRef = ref(null);
+const submitForm = () => {
+  ruleFormRef.value.validate(valid => {
     if (valid) {
-      $http.post('/login/common',{
+      $http.post('/login/common', {
         username: ruleForm.value.name,
         loginKey: encrypt(ruleForm.value.password)
       }).then(res => {
-        let { data } = res.data
+        let { data } = res.data;
         // console.log(res);
-        sessionStorage.setItem('isMatch', res.data.data.isMatch)
-        sessionStorage.setItem('isFirst', 'true')
-        router.push('/main/index')
+        sessionStorage.setItem('isMatch', res.data.data.isMatch);
+        sessionStorage.setItem('isFirst', 'true');
+        router.push('/main/index');
         // sessionStorage.setItem('systemInfo',JSON.stringify(data))
-      })
+      });
       // $http({
       //   url: '/login/common',
       //   data: {
@@ -95,13 +95,13 @@ const submitForm = ()=>{
       return false;
     }
   });
-}
+};
 
 function systemConfig() {
-  $http.get('/loginRest/systemConfig/3',{}).then(res => {
-    let { data } = res.data
-    sessionStorage.setItem('systemInfo',JSON.stringify(data))
-  })
+  $http.get('/loginRest/systemConfig/3', {}).then(res => {
+    let { data } = res.data;
+    sessionStorage.setItem('systemInfo', JSON.stringify(data));
+  });
   // $http({
   //   url: '/loginRest/systemConfig/3'
   // }).then(res=>{
@@ -111,8 +111,7 @@ function systemConfig() {
 }
 onMounted(() => {
   systemConfig();
-})
-
+});
 
 </script>
 
