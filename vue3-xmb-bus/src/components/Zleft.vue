@@ -41,7 +41,25 @@ const currentMenuId = sessionStorage.currentMenuId || '';
 function getMenuList() {
   $http.get('/platformMenu/menuList').then(res => {
     if (res.data.success) {
-      menuList.value = res.data.data;
+      let obj = [{
+        'id': '402883945ab30f3a015ab31952456952',
+        'display': 1,
+        'hasChild': 0,
+        'icon': 'icontodowork',
+        'level': 1,
+        'name': '首页',
+        'order': 1,
+        'type': 0,
+        'parentId': '0',
+        'route': 'index',
+        'apiAuth': '/workFlowRest/**',
+        'moduleId': '',
+        'isAdmin': 0,
+        'sectionId': '0000000000',
+        'remark': '标准',
+        'subMenu': null
+      }];
+      menuList.value = [...obj, ...res.data.data];
       if (currentMenuId) {
         for (let level1MenIndex in menuList.value) {
           if (currentMenuId == menuList.value[level1MenIndex].id) {

@@ -59,7 +59,49 @@ a:hover {
   background-color: #F56C6C;
   margin-right: 10px;
 }
+// 副标题
+.zhgd-subTitle{
+  font-size: 16px;
+  font-weight: 700;
+  color: #515e78;
+  position: relative;
+  padding-left: 20px;
+  margin-bottom: 10px;
+}
+.zhgd-subTitle:after {
+  content: "";
+  width: 4px;
+  height: 16px;
+  position: absolute;
+  top: 3px;
+  left: 0;
+  background: #3075ff;
+}
 
+.flex{
+  display: flex;
+}
+.flex1{
+  flex:1;
+}
+.flex2{
+  flex:2;
+}
+.flex3{
+  flex:3;
+}
+.flex-direction{
+  flex-direction:column;
+}
+.flex-grow{
+  flex-grow:1;
+}
+.flex-wrap{
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
 .between{
   display: flex;
   width: 100%;
@@ -118,4 +160,9 @@ a:hover {
 .p10{
   padding: 10px;
   box-sizing: border-box;
+}
+
+// 颜色
+.color0090FF{
+  color: #0090FF;
 }

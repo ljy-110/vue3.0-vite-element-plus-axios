@@ -38,6 +38,7 @@ import Zleft from '@/components/Zleft.vue';
 .main{
   background-color: rgba(144, 147, 153,.2);
   --el-main-padding:10px;
+  height: calc(100vh - 60px);
 }
 .bg-white{
   background-color: #fff;

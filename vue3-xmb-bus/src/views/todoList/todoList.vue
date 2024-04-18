@@ -112,7 +112,7 @@ const statistics = reactive({
   handleNum: 0
 });
 const selectChangeTime = val => {
-  if (val.length > 0) {
+  if (val) {
     searchForm.deadlineStartTime = val[0];
     searchForm.deadlineEndTime = val[1];
   } else {

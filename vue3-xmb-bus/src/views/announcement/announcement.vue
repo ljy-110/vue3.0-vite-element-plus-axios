@@ -65,8 +65,8 @@
         <el-table-column prop="depolyTime" label="通知时间" width="200" align="center" />
         <el-table-column label="操作" width="200" align="center">
           <template #default="scope">
-            <el-button type="text" @click="view(scope.$index, scope.row)">详情</el-button>
-            <el-button type="text" style="color:#F56C6C" @click="deleteInfo(scope.$index, scope.row.id)">删除</el-button>
+            <el-button link type="primary" @click="view(scope.$index, scope.row)">详情</el-button>
+            <el-button link style="color:#F56C6C" @click="deleteInfo(scope.$index, scope.row.id)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -77,13 +77,49 @@
         />
       </div>
 
-      <el-dialog v-model="dialogVisible" title="Tips" width="500" top="3%" :before-close="handleClose">
+      <el-dialog v-model="dialogVisible" title="详情" width="45%" :before-close="handleClose">
+        <div>
+          <el-form :model="announcementInfo" label-width="100px">
+            <el-row>
+              <el-col :span="24">
+                <el-form-item label="公告主题" prop="title">
+                  <el-input v-model="announcementInfo.title" readonly />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="通知类型" prop="typeName">
+                  <el-input v-model="announcementInfo.typeName" readonly />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="发布来源" prop="title">
+                  <el-input v-model="announcementInfo.title" readonly />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="通知内容" prop="content">
+                  <el-input v-model="announcementInfo.content" type="textarea" :rows="6" readonly />
+                </el-form-item>
+              </el-col>
+              <el-col :span="24">
+                <el-form-item label="附件" prop="fileList">
+                  <el-table :data="announcementInfo.fileList" style="width: 100%">
+                    <el-table-column type="index" label="序号" width="60" align="center" />
+                    <el-table-column prop="fileName" label="文件名称" align="center" :show-overflow-tooltip="true" />
+                    <el-table-column label="操作" width="150" align="center">
+                      <template #default="scope">
+                        <el-button size="mini" @click="download(scope.row.fileId, scope.row.fileName)">下载</el-button>
+                      </template>
+                    </el-table-column>
+                  </el-table>
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </el-form>
+        </div>
         <template #footer>
-          <div class="dialog-footer">
-            <el-button @click="dialogVisible = false">Cancel</el-button>
-            <el-button type="primary" @click="dialogVisible = false">
-              Confirm
-            </el-button>
+          <div class="dialog-footer center">
+            <el-button @click="dialogVisible = false">关闭</el-button>
           </div>
         </template>
       </el-dialog>
@@ -93,6 +129,7 @@
 
 <script setup>
 import { ref, reactive, onMounted, getCurrentInstance } from 'vue';
+import { ElMessage } from 'element-plus';
 const currentInstance = getCurrentInstance();
 const { $http } = currentInstance.appContext.config.globalProperties;
 const searchForm = reactive({
@@ -111,7 +148,7 @@ const statistics = reactive({
   govNum: 0
 });
 const selectChangeTime = val => {
-  if (val.length > 0) {
+  if (val) {
     searchForm.depolyStartTime = val[0];
     searchForm.depolyEndTime = val[1];
   } else {
@@ -172,12 +209,76 @@ const readAll = () => {
   });
 };
 
+const dialogVisible = ref(false);
+const announcementInfo = ref({
+  title: '',
+  typeName: '',
+  createUserName: '',
+  content: '',
+  file: '',
+  fileList: []
+});
 const view = (index, row) => {
+  getAnnouncementFind(row.id);
   dialogVisible.value = true;
 };
+const handleClose = done => {
+  done();
+};
+const getAnnouncementFind = id => {
+  $http.get('/announcement/find/' + id).then(res => {
+    if (res.data.success) {
+      getFileList(res.data.data.file);
+      announcementInfo.value = res.data.data;
+      announcementInfo.value.createUserName = '智慧工地系统';
+    }
+  });
+};
+const getFileList = id => {
+  announcementInfo.value.fileList = [];
+  if (id) {
+    $http.get('/file/list?fileIds=' + id).then(res => {
+      if (res.data.success) {
+        announcementInfo.value.fileList = res.data.data;
+      }
+    });
+  }
+};
+const download = (fileId, fileName) => {
+  let url = '/file/download?fileId=' + fileId;
+  this.$http.get(url, { responseType: 'blob' }).then(res => {
+    if (res.data && res.data.msg) {
+      ElMessage({ message: res.data.msg, type: 'warning' });
+      return;
+    }
 
-const dialogVisible = ref(false);
-
+    if ('download' in document.createElement('a')) {
+      let url = window.URL.createObjectURL(res.data);
+      let link = document.createElement('a');
+      link.style.display = 'none';
+      link.href = url;
+      link.setAttribute('download', fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } else {
+      navigator.msSaveBlob(res.data, fileName);
+    }
+  }).catch(() => {
+    ElMessage({ showClose: true, message: '下载失败', type: 'warning' });
+  });
+};
+const deleteInfo = (index, id) => {
+  $http.get('/announcement/delete/' + id).then(res => {
+    if (res.data.success) {
+      rederStatisticsData();
+      tableData.splice(index, 1);
+      ElMessage({ showClose: true, message: '删除成功', type: 'success' });
+    } else {
+      ElMessage({ showClose: true, message: '删除失败', type: 'warning' });
+    }
+  });
+};
 onMounted(() => {
   getList(1);
 });
